@@ -85,6 +85,8 @@ import java.util.List;
  *
  */
 public class IabHelper {
+    final static String TAG = "Reflora";
+  
     // Is debug logging enabled?
     boolean mDebugLog = false;
     String mDebugTag = "IabHelper";
@@ -318,10 +320,12 @@ public class IabHelper {
 
         try {
             logDebug("Constructing buy intent for " + sku);
+            Log.d(TAG, "Constructing buy intent for " + sku);
             Bundle buyIntentBundle = mService.getBuyIntent(3, mContext.getPackageName(), sku, ITEM_TYPE_INAPP, extraData);
             int response = getResponseCodeFromBundle(buyIntentBundle);
             if (response != BILLING_RESPONSE_RESULT_OK) {
                 logError("Unable to buy item, Error response: " + getResponseDesc(response));
+                Log.d(TAG, "Unable to buy item, Error response: " + getResponseDesc(response));
 
                 result = new IabResult(response, "Unable to buy item");
                 if (listener != null) listener.onIabPurchaseFinished(result, null);
@@ -329,6 +333,7 @@ public class IabHelper {
 
             PendingIntent pendingIntent = buyIntentBundle.getParcelable(RESPONSE_BUY_INTENT);
             logDebug("Launching buy intent for " + sku + ". Request code: " + requestCode);
+            Log.d(TAG, "Launching buy intent for " + sku + ". Request code: " + requestCode);
             mRequestCode = requestCode;
             mPurchaseListener = listener;
             act.startIntentSenderForResult(pendingIntent.getIntentSender(),
@@ -338,6 +343,8 @@ public class IabHelper {
         }
         catch (SendIntentException e) {
             logError("SendIntentException while launching purchase flow for sku " + sku);
+            Log.d(TAG, "SendIntentException while launching purchase flow for sku " + sku);
+            
             e.printStackTrace();
 
             result = new IabResult(IABHELPER_SEND_INTENT_FAILED, "Failed to send intent.");
@@ -345,6 +352,7 @@ public class IabHelper {
         }
         catch (RemoteException e) {
             logError("RemoteException while launching purchase flow for sku " + sku);
+            Log.d(TAG, "RemoteException while launching purchase flow for sku " + sku);
             e.printStackTrace();
 
             result = new IabResult(IABHELPER_REMOTE_EXCEPTION, "Remote exception while starting purchase flow");

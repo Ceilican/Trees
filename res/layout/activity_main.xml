@@ -44,4 +44,15 @@
             android:onClick="plantTrees"
             android:src="@drawable/tree" />
 
+        <TextView
+            android:id="@+id/textViewCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView1"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/imageView1"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
     </RelativeLayout>
