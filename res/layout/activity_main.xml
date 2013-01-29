@@ -1,12 +1,47 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-        
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
         <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_plant"
-        android:onClick="plantTrees" />
-</LinearLayout>
+            android:id="@+id/button_50trees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button_5trees"
+            android:layout_below="@+id/button_5trees"
+            android:layout_marginTop="56dp"
+            android:onClick="plantTrees"
+            android:text="@string/button_50trees" />
+
+        <Button
+            android:id="@+id/button_1tree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="87dp"
+            android:text="@string/button_1tree" />
+
+        <Button
+            android:id="@+id/button_5trees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button_1tree"
+            android:layout_below="@+id/button_1tree"
+            android:layout_marginTop="56dp"
+            android:text="@string/button_5trees" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_50trees"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="44dp"
+            android:clickable="true"
+            android:contentDescription="@string/tree"
+            android:onClick="plantTrees"
+            android:src="@drawable/tree" />
+
+    </RelativeLayout>
