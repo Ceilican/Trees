@@ -86,8 +86,7 @@ public class MainActivity extends Activity {
               return;
           }
 
-          updateUi();
-          //setWaitScreen(false);
+          updateUI();
           Log.d(TAG, "Initial inventory query finished; enabling main UI.");
       }
   };
@@ -138,8 +137,7 @@ public class MainActivity extends Activity {
           else {
               complain("Error while consuming: " + result);
           }
-          updateUi();
-          //setWaitScreen(false);
+          updateUI();
           Log.d(TAG, "End consumption flow.");
       }
   };
@@ -171,17 +169,14 @@ public class MainActivity extends Activity {
     bld.create().show();
   }
   
-  // updates UI to reflect model
-  public void updateUi() {
+  public void updateUI() {
     TextView textViewCounter = (TextView) findViewById(R.id.textViewCounter);
     textViewCounter.setText(String.valueOf(treeCounter));
   }
   
   
-  // We're being destroyed. It's important to dispose of the helper here!
   @Override
   public void onDestroy() {
-      // very important:
       Log.d(TAG, "Destroying helper.");
       if (mHelper != null) mHelper.dispose();
       mHelper = null;

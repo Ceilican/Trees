@@ -1,58 +1,88 @@
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/button_50trees"
+    <ImageView
+        android:id="@+id/imageDownArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:clickable="true"
+        android:contentDescription="@string/downArrow"
+        android:onClick="plantTrees"
+        android:src="@drawable/rough_down_arrow128" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageDownArrow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radioMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/button_5trees"
-            android:layout_below="@+id/button_5trees"
-            android:layout_marginTop="56dp"
-            android:onClick="plantTrees"
-            android:text="@string/button_50trees" />
+            android:text="@string/radioMin"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button_1tree"
+        <RadioButton
+            android:id="@+id/radioMed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="87dp"
-            android:text="@string/button_1tree" />
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:checked="true"
+            android:text="@string/radioMed"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button_5trees"
+        <RadioButton
+            android:id="@+id/radioMax"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/button_1tree"
-            android:layout_below="@+id/button_1tree"
-            android:layout_marginTop="56dp"
-            android:text="@string/button_5trees" />
+            android:text="@string/radioMax"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/button_50trees"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="44dp"
-            android:clickable="true"
-            android:contentDescription="@string/tree"
-            android:onClick="plantTrees"
-            android:src="@drawable/tree" />
+    </RadioGroup>
 
-        <TextView
-            android:id="@+id/textViewCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView1"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/imageView1"
-            android:text="0"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageView
+        android:id="@+id/imageTree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/radioGroup"
+        android:layout_alignLeft="@+id/imageDownArrow"
+        android:layout_marginBottom="18dp"
+        android:contentDescription="@string/tree"
+        android:src="@drawable/tree" />
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/textViewCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageDownArrow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="@string/textViewCounter"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/green"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewCounter"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@+id/imageDownArrow"
+        android:text="@string/plantedTrees" />
+
+</RelativeLayout>
