@@ -189,6 +189,15 @@ public class MainActivity extends Activity {
     mHelper.launchPurchaseFlow(this, SKU_Tree, RC_REQUEST, mPurchaseFinishedListener);
   }
   
+  public void share(View view) {
+    Intent sendIntent = new Intent();
+    sendIntent.setAction(Intent.ACTION_SEND);
+    sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+    sendIntent.setType("text/plain");
+    startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.chooserTitle)));
+  }
+  
+  
   void complain(String message) {
     Log.e(TAG, "**** Reflora Error: " + message);
     alert("Error: " + message);

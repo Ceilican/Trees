@@ -3,6 +3,9 @@
 
     <string name="app_name">Reflora</string>
     <string name="tree">tree</string>
+    <string name="share">share</string>
+    
+    <string name="chooserTitle">Choose sharing application</string>
     
     <string name="radioMin">1</string>
     <string name="radioMed">5</string>
