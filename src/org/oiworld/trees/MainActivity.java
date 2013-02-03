@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
   }
   
   public void updateUI() {
-    TextView textViewCounter = (TextView) findViewById(R.id.textViewCounter);
+    TextView textViewCounter = (TextView) findViewById(R.id.counterTrees);
     textViewCounter.setText(String.valueOf(getTreeCounter()));
   }
   
