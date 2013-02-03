@@ -3,13 +3,19 @@
 
     <string name="app_name">Reflora</string>
     <string name="tree">tree</string>
-    <string name="plantedTrees">Planted trees:</string>
+    
     <string name="radioMin">1</string>
     <string name="radioMed">5</string>
     <string name="radioMax">50</string>
-    <string name="textViewCounter">0</string>
+    
+    <string name="counter">0</string>
+    <string name="treeCounter">treeCounter</string>
+    
     <string name="plant">Plant</string>
     <string name="downArrow">Down arrow</string>
     <string name="menu_settings">Settings</string>
 
+    <string name="Planted_Trees">Planted Trees:</string>
+    <string name="Reforested_Area">Reforested Area:</string>
+    <string name="Captured_CO2">Captured CO₂:</string>
 </resources>

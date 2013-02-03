@@ -10,7 +10,9 @@ import org.oiworld.trees.billing.Purchase;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -20,15 +22,44 @@ public class MainActivity extends Activity {
   //Debug tag, for logging
   static final String TAG = "Reflora";
   
+  // Conversion rates
+  static final int carbonRate = 60; // grams of CO2 per day
+  static final int areaRate = 4; // square meters per tree  ToDo
+  
   //The billing helper object
   IabHelper mHelper;
   
   //SKUs for products
   //static final String SKU_Tree = "tree";
   static final String SKU_Tree = "android.test.purchased";
+  //static final String SKU_Tree = "android.test.canceled";
   
   // (arbitrary) request code for the purchase flow
   static final int RC_REQUEST = 10001;
+
+  // Shared Preferences, where the number of planted trees is stored 
+  SharedPreferences sharedPref; 
+  
+  private int getTreeCounter() {
+    Log.d(TAG, "Getting tree counter.");
+    int defaultValue = 0;
+    return sharedPref.getInt(getString(R.string.treeCounter), defaultValue);
+  }
+  
+  private int getReforestedArea() {
+    return areaRate * getTreeCounter();
+  }
+  
+  private int getCapturedCarbon() {
+    return carbonRate * getTreeCounter();
+  }
+  
+  private void addTrees(int quantity) {
+    Log.d(TAG, "Incrementing tree counter.");
+    SharedPreferences.Editor editor = sharedPref.edit();
+    editor.putInt(getString(R.string.treeCounter), getTreeCounter() + quantity);
+    editor.commit();
+  }
   
   int treeCounter = 0;
   
@@ -36,6 +67,8 @@ public class MainActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    
+    sharedPref = getPreferences(Context.MODE_PRIVATE);
     
     String Key1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkSbW7u/0unrluQ0gUDFPYaVg2omByuk2EuxkAnc5AWydNtOd8gJImxEb2H9EE6NIsUDZ+lkbCz2B76xF89XSDdlxrWgPRcEknINOvoj3ERtqWLPDUyDLDTYlMA6w95GijX8+//";
     String Key2 = "FoLvqkxv5JTb89NvoFfJ0HZfnI+sr9lCoz87Sh/RLhod7anvLL+TjKfsiYQrIqmHeJV+o+X25DYDDRkxhKOgtrK/Qc3Mql6M4L0FA3/r0sAuzHV9cCowPzyFm4JiDdcgrRsOmC3JqUFS6ad7eehtt0INs+IK5Y+2gHfmZfW/xFTEyyUShkP7t4k+uJTbRUoM45E4zeW/uFA1StowIDAQAB";
@@ -60,14 +93,14 @@ public class MainActivity extends Activity {
 
             // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
             Log.d(TAG, "Billing setup successful. Querying inventory.");
-            mHelper.queryInventoryAsync(mGotInventoryListener2);
+            mHelper.queryInventoryAsync(mGotInventoryListener);
         }
     });
     
   }
 
   //Listener that's called when we finish querying the items we own
-  IabHelper.QueryInventoryFinishedListener mGotInventoryListener2 = new IabHelper.QueryInventoryFinishedListener() {
+  IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
       public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
           Log.d(TAG, "Query inventory finished.");
           if (result.isFailure()) {
@@ -108,7 +141,6 @@ public class MainActivity extends Activity {
           Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
           if (result.isFailure()) {
               complain("Error purchasing: " + result);
-              //setWaitScreen(false);
               return;
           }
 
@@ -128,9 +160,10 @@ public class MainActivity extends Activity {
           Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
 
           if (result.isSuccess()) {
+            Log.d(TAG, "Consumption successful. Provisioning.");
             if(purchase.getSku().equals(SKU_Tree)) {
-              Log.d(TAG, "Consumption successful. Provisioning.");
-              treeCounter += 1;
+              
+              addTrees(1);
               alert("You planted one more tree. You have now planted a total of " + String.valueOf(treeCounter) + " trees.");
             }
           }
@@ -157,7 +190,7 @@ public class MainActivity extends Activity {
   }
   
   void complain(String message) {
-    Log.e(TAG, "**** TrivialDrive Error: " + message);
+    Log.e(TAG, "**** Reflora Error: " + message);
     alert("Error: " + message);
   }
 
@@ -171,7 +204,7 @@ public class MainActivity extends Activity {
   
   public void updateUI() {
     TextView textViewCounter = (TextView) findViewById(R.id.textViewCounter);
-    textViewCounter.setText(String.valueOf(treeCounter));
+    textViewCounter.setText(String.valueOf(getTreeCounter()));
   }
   
   
