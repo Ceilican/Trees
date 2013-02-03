@@ -1,26 +1,23 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/imageDownArrow"
+        android:id="@+id/imageTree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:clickable="true"
-        android:contentDescription="@string/downArrow"
-        android:onClick="plantTrees"
-        android:src="@drawable/rough_down_arrow128" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="18dp"
+        android:contentDescription="@string/tree"
+        android:paddingTop="25dp"
+        android:src="@drawable/tree" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imageDownArrow"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="22dp"
         android:orientation="horizontal" >
 
@@ -50,88 +47,111 @@
             android:text="@string/radioMax"
             android:textSize="30sp"
             android:textStyle="bold" />
-
     </RadioGroup>
 
     <ImageView
-        android:id="@+id/imageTree"
+        android:id="@+id/imageDownArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/radioGroup"
-        android:layout_alignLeft="@+id/imageDownArrow"
-        android:layout_marginBottom="18dp"
-        android:contentDescription="@string/tree"
-        android:src="@drawable/tree" />
+        android:layout_gravity="center_horizontal"
+        android:clickable="true"
+        android:contentDescription="@string/downArrow"
+        android:onClick="plantTrees"
+        android:src="@drawable/rough_down_arrow128" />
 
-    <TextView
-        android:id="@+id/counterTrees"
+    <ImageButton
+        android:id="@+id/imageButton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/radioGroup"
-        android:layout_below="@+id/imageDownArrow"
-        android:layout_marginTop="25dp"
-        android:text="@string/counter"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/green"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/share"
+        android:onClick="share"
+        android:src="@android:drawable/ic_menu_share" />
 
-    <TextView
-        android:id="@+id/counterArea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/counterTrees"
-        android:layout_below="@+id/counterTrees"
-        android:layout_marginTop="24dp"
-        android:text="@string/counter"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/green"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_gravity="bottom"
+        android:layout_weight="1.0"
+        android:gravity="bottom" >
 
-    <TextView
-        android:id="@+id/counterCO2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/counterArea"
-        android:layout_below="@+id/counterArea"
-        android:layout_marginTop="24dp"
-        android:text="@string/counter"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/green"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        <TableRow
+            android:id="@+id/rowTrees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dip" >
 
-    <TextView
-        android:id="@+id/textReforestedArea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/counterArea"
-        android:layout_alignBottom="@+id/counterArea"
-        android:layout_alignLeft="@+id/textPlantedTrees"
-        android:text="@string/Reforested_Area"
-        android:textColor="@color/green"
-        android:textSize="30sp" />
+            <TextView
+                android:id="@+id/textPlantedTrees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Planted_Trees"
+                android:textColor="@color/green"
+                android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/textPlantedTrees"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/counterArea"
-        android:layout_alignRight="@+id/imageTree"
-        android:text="@string/Planted_Trees"
-        android:textColor="@color/green"
-        android:textSize="30sp" />
+            <TextView
+                android:id="@+id/counterTrees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="right"
+                android:text="@string/counter"
+                android:textColor="@color/green"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </TableRow>
 
-    <TextView
-        android:id="@+id/textCapturedCO2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/counterCO2"
-        android:layout_alignBottom="@+id/counterCO2"
-        android:layout_alignLeft="@+id/textReforestedArea"
-        android:text="@string/Captured_CO2"
-        android:textColor="@color/green"
-        android:textSize="30sp" />
+        <TableRow
+            android:id="@+id/rowArea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dip" >
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/textReforestedArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Reforested_Area"
+                android:textColor="@color/green"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/counterArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="right"
+                android:text="@string/counter"
+                android:textColor="@color/green"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowCarbon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dip" >
+
+            <TextView
+                android:id="@+id/textCapturedCO2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Captured_CO2"
+                android:textColor="@color/green"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/counterCO2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="right"
+                android:text="@string/counter"
+                android:textColor="@color/green"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
