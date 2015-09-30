@@ -32,7 +32,8 @@ public class MainActivity extends Activity {
   //SKUs for products
   //static final String SKU_Tree = "tree";
   static final String SKU_Tree = "android.test.purchased";
-  //static final String SKU_Tree = "android.test.canceled";
+  static final String SKU_TenTrees = "android.test.canceled";
+  static final String SKU_FiftyTrees = "android.test.canceled";
   
   // (arbitrary) request code for the purchase flow
   static final int RC_REQUEST = 10001;
@@ -61,8 +62,6 @@ public class MainActivity extends Activity {
     editor.commit();
   }
   
-  int treeCounter = 0;
-  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -70,69 +69,60 @@ public class MainActivity extends Activity {
     
     sharedPref = getPreferences(Context.MODE_PRIVATE);
     
+    Log.d(TAG, "Creating IAB helper.");
     String Key1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkSbW7u/0unrluQ0gUDFPYaVg2omByuk2EuxkAnc5AWydNtOd8gJImxEb2H9EE6NIsUDZ+lkbCz2B76xF89XSDdlxrWgPRcEknINOvoj3ERtqWLPDUyDLDTYlMA6w95GijX8+//";
     String Key2 = "FoLvqkxv5JTb89NvoFfJ0HZfnI+sr9lCoz87Sh/RLhod7anvLL+TjKfsiYQrIqmHeJV+o+X25DYDDRkxhKOgtrK/Qc3Mql6M4L0FA3/r0sAuzHV9cCowPzyFm4JiDdcgrRsOmC3JqUFS6ad7eehtt0INs+IK5Y+2gHfmZfW/xFTEyyUShkP7t4k+uJTbRUoM45E4zeW/uFA1StowIDAQAB";
     String base64EncodedPublicKey = Key1 + Key2;
-    
-    // Create the helper, passing it our context and the public key to verify signatures with
-    Log.d(TAG, "Creating IAB helper.");
     mHelper = new IabHelper(this, base64EncodedPublicKey);
    
-    // Start setup. This is asynchronous and the specified listener
-    // will be called once setup completes.
+    // Start billing setup.
     Log.d(TAG, "Starting billing setup.");
     mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-        public void onIabSetupFinished(IabResult result) {
-            Log.d(TAG, "Billing setup finished.");
-
-            if (!result.isSuccess()) {
-                // Oh noes, there was a problem.
-                complain("Problem setting up in-app billing: " + result);
-                return;
-            }
-
-            // Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
-            Log.d(TAG, "Billing setup successful. Querying inventory.");
-            mHelper.queryInventoryAsync(mGotInventoryListener);
+      public void onIabSetupFinished(IabResult result) {
+        Log.d(TAG, "Billing setup finished.");
+        
+        if (!result.isSuccess()) {
+          complain("Problem setting up in-app billing: " + result);
+          return;
         }
+            
+        Log.d(TAG, "Billing setup successful. Querying inventory.");
+        mHelper.queryInventoryAsync(mGotInventoryListener);
+      }
     });
     
   }
 
-  //Listener that's called when we finish querying the items we own
   IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-      public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-          Log.d(TAG, "Query inventory finished.");
-          if (result.isFailure()) {
-              complain("Failed to query inventory: " + result);
-              return;
-          }
+    public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+        Log.d(TAG, "Query inventory finished.");
+        if (result.isFailure()) {
+            complain("Failed to query inventory: " + result);
+            return;
+        }
 
-          Log.d(TAG, "Query inventory was successful.");
-
-          Log.d(TAG, "Inventory is: \n" + inventory.toString());
+        Log.d(TAG, "Inventory query was successful.");
           
-          // Check for tree delivery -- if we own tree, we should process it immediately
-          if (inventory.hasPurchase(SKU_Tree)) {
-              Log.d(TAG, "We have tree. Consuming it.");
-              mHelper.consumeAsync(inventory.getPurchase(SKU_Tree), mConsumeFinishedListener);
-              return;
-          }
+        if (inventory.hasPurchase(SKU_Tree)) {
+          Log.d(TAG, "We have a tree. Consuming it.");  
+          mHelper.consumeAsync(inventory.getPurchase(SKU_Tree), mConsumeFinishedListener);
+          return;
+        }
 
-          updateUI();
-          Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+        updateUI();
+        Log.d(TAG, "Initial inventory query finished; enabling main UI.");
       }
   };
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-      if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-          super.onActivityResult(requestCode, resultCode, data);
-      }
-      else {
-          Log.d(TAG, "onActivityResult handled by IABUtil.");
-      }
+    Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+    if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {      
+      super.onActivityResult(requestCode, resultCode, data);
+    }
+    else {
+      Log.d(TAG, "onActivityResult handled by IABUtil.");
+    }
   }
   
   //Callback for when a purchase is finished
@@ -161,14 +151,13 @@ public class MainActivity extends Activity {
 
           if (result.isSuccess()) {
             Log.d(TAG, "Consumption successful. Provisioning.");
-            if(purchase.getSku().equals(SKU_Tree)) {
-              
+            if(purchase.getSku().equals(SKU_Tree)) {      
               addTrees(1);
-              alert("You planted one more tree. You have now planted a total of " + String.valueOf(treeCounter) + " trees.");
+              alert("You planted one more tree.");
             }
           }
           else {
-              complain("Error while consuming: " + result);
+            complain("Error while consuming: " + result);
           }
           updateUI();
           Log.d(TAG, "End consumption flow.");
@@ -182,7 +171,7 @@ public class MainActivity extends Activity {
     return true;
   }
   
-  /** Called when the user clicks the Plant button */
+
   public void plantTrees(View view) {
     Log.d(TAG, "Plant tree button clicked.");
     Log.d(TAG, "Launching purchase flow for tree.");
@@ -219,9 +208,9 @@ public class MainActivity extends Activity {
   
   @Override
   public void onDestroy() {
-      Log.d(TAG, "Destroying helper.");
-      if (mHelper != null) mHelper.dispose();
-      mHelper = null;
-      super.onDestroy();
+    Log.d(TAG, "Destroying helper.");
+    if (mHelper != null) mHelper.dispose();
+    mHelper = null;
+    super.onDestroy();
   }
 }
